@@ -19,8 +19,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::middleware('auth:api')->get('/test', function (Request $request) {
+    return 'Authenticated!';
 });
 
 Route::group([
@@ -36,8 +40,8 @@ Route::group([
     'middleware' => 'cors',
     'prefix' => 'v1'
 ], function ($router) {
-
-
+    //Route::middleware('auth:api')->get('/meetings',[TbmMeetingController::class,'index']);
+    //Route::get('/meetings',[TbmMeetingController::class,'index'])->middleware('auth:api');
     Route::get('/meetings',[TbmMeetingController::class,'index']);
     Route::get('/meetings/{id}', [TbmMeetingController::class, 'show']);
     Route::post('/meetings', [TbmMeetingController::class, 'store']);
@@ -56,4 +60,8 @@ Route::group([
     Route::put('/runner/{id}', [TbmRunnerController::class, 'update']);
     Route::delete('/runner/{id}', [TbmRunnerController::class, 'destroy']);
     Route::get('/runner/{runnerId}/form-data', [TbmRunnerController::class, 'showFormData']);
+});
+
+Route::fallback(function(){
+    return response()->json(['message' => 'Resource not found.'], 404);
 });

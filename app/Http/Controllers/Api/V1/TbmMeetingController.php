@@ -30,6 +30,10 @@ class TbmMeetingController extends APIController
      */
     public function index(): JsonResponse
     {
+        if(Auth::check()){
+            return $this->responseUnauthorized();
+        }
+
         return response()->json([
             'data' => $this->meetingRepository->getAllMeetings()
         ]);
@@ -56,6 +60,10 @@ class TbmMeetingController extends APIController
         try{
         $validatedData = $request->validated();
 
+        // if ($validatedData->fails())
+        // {
+        //     return response(['errors'=>$validator->errors()->all()], 422);
+        // }
         return response()->json(
             [
                 'data' => $this->meetingRepository->createMeeting($validatedData)
@@ -77,15 +85,18 @@ class TbmMeetingController extends APIController
     public function show(TbmMeeting $tbmMeeting,Request $request): JsonResponse
     {
 
+      if(Auth::check()){
+            return $this->responseUnauthorized();
+        }
 
         try {
-           // if(Auth::check()){
+
             $meetingId = $request->route('id');
 
             return response()->json([
                 'data' => $this->meetingRepository->getMeetingById($meetingId)
             ]);
-        
+
         } catch (Exception $e) {
             return $this->errorResponse(500,'Error View resource.');
         }
