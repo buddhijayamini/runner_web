@@ -147,7 +147,7 @@ class TbmRunnerController extends APIController
             $runnerId = $request->route('runnerId');
 
             $runnerData = response()->json([
-                'data' => $this->runnerRepository->getRunnerById($runnerId)
+                'runner_name' => $this->runnerRepository->getRunnerNameById($runnerId)
             ]);
 
             $formData = response()->json([
@@ -155,7 +155,7 @@ class TbmRunnerController extends APIController
             ]);
 
             $lastRun = response()->json([
-                'data' => $this->runnerRepository->getFormLastRunnerById($runnerId)
+                'Last_runs' => $this->runnerRepository->getFormLastRunnerById($runnerId)
             ]);
 
          //   $query = TbmRunner::with(['race','formData','formLastRunner'])
