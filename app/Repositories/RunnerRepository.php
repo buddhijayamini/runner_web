@@ -35,14 +35,20 @@ class RunnerRepository implements RunnerRepositoryInterface
         return TbmRunner::whereId($runnerId)->update($newDetails);
     }
 
+    public function getRunnerNameById($runnerId)
+    {
+        return TbmRunner::findOrFail($runnerId)->get('name');
+    }
+
     public function getFormDataById($runnerId)
     {
-        return TbmFormData::findOrFail($runnerId);
+        return TbmFormData::findOrFail($runnerId)->get(['age','sex','color']);
     }
 
     public function getFormLastRunnerById($runnerId)
     {
-        return TbmFormLastRunner::findOrFail($runnerId);
+        return TbmFormLastRunner::findOrFail($runnerId)->get('name');
+
     }
 
 }

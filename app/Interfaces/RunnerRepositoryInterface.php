@@ -9,6 +9,7 @@ interface RunnerRepositoryInterface
     public function deleteRunner($runnerId);
     public function createRunner(array $runnerDetails);
     public function updateRunner($runnerId, array $newDetails);
+    public function getRunnerNameById($runnerId);
     public function getFormDataById($runnerId);
     public function getFormLastRunnerById($runnerId);
 }
