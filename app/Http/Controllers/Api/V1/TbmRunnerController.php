@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\APIController;
-use App\Models\TbmRunner;
-use App\Http\Requests\StoreTbmRunnerRequest;
-use App\Http\Requests\UpdateTbmRunnerRequest;
-use App\Interfaces\RunnerRepositoryInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Interfaces\RunnerRepositoryInterface;
+use Illuminate\Support\Str;
+use App\Http\Requests\StoreTbmRunnerRequest;
+use App\Models\TbmRunner;
+use App\Http\Requests\UpdateTbmRunnerRequest;
 use Illuminate\Support\Facades\Log;
 
 class TbmRunnerController extends APIController
@@ -26,8 +27,14 @@ class TbmRunnerController extends APIController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $header = $request->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
         return response()->json([
             'data' => $this->runnerRepository->getAllRunners()
         ]);
@@ -49,8 +56,14 @@ class TbmRunnerController extends APIController
      * @param  \App\Http\Requests\StoreTbmRunnerRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTbmRunnerRequest $request): JsonResponse
+    public function store(Request $request1, StoreTbmRunnerRequest $request): JsonResponse
     {
+        $header = $request1->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
         try{
             $validatedData = $request->validated();
 
@@ -72,8 +85,14 @@ class TbmRunnerController extends APIController
      * @param  \App\Models\TbmRunner  $tbmRunner
      * @return \Illuminate\Http\Response
      */
-    public function show(TbmRunner $tbmRunner,Request $request): JsonResponse
+    public function show(TbmRunner $tbmRunner, Request $request): JsonResponse
     {
+        $header = $request->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
         try {
             $runnerId = $request->route('id');
 
@@ -105,8 +124,14 @@ class TbmRunnerController extends APIController
      * @param  \App\Models\TbmRunner  $tbmRunner
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,UpdateTbmRunnerRequest $request1, TbmRunner $tbmRunner): JsonResponse
+    public function update(Request $request, UpdateTbmRunnerRequest $request1, TbmRunner $tbmRunner): JsonResponse
     {
+        $header = $request->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
         try{
             $runnerId = $request->route('id');
             $runnerDetails = $request1->validated();
@@ -126,8 +151,14 @@ class TbmRunnerController extends APIController
      * @param  \App\Models\TbmRunner  $tbmRunner
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TbmRunner $tbmRunner,Request $request): JsonResponse
+    public function destroy(TbmRunner $tbmRunner, Request $request): JsonResponse
     {
+        $header = $request->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
         try{
             $runnerId = $request->route('id');
 
@@ -141,8 +172,14 @@ class TbmRunnerController extends APIController
         }
     }
 
-    public function showFormData(TbmRunner $tbmRunner,Request $request): JsonResponse
+    public function showFormData(TbmRunner $tbmRunner, Request $request): JsonResponse
     {
+        $header = $request->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
         try {
             $runnerId = $request->route('runnerId');
 

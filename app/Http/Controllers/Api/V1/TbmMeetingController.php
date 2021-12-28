@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\APIController;
-use App\Models\TbmMeeting;
-use App\Http\Requests\StoreTbmMeetingRequest;
-use App\Http\Requests\UpdateTbmMeetingRequest;
-use App\Interfaces\MeetingRepositoryInterface;
+use App\Http\Middleware\Authenticate;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use App\Interfaces\MeetingRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Requests\StoreTbmMeetingRequest;
+use Illuminate\Support\Str;
+use App\Models\TbmMeeting;
+use App\Http\Requests\UpdateTbmMeetingRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,9 +30,13 @@ class TbmMeetingController extends APIController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        if(Auth::check()){
+        $header = $request->header('Authorization',' ');
+       // dd(Auth::guard('access_token')->check());
+       if (!Str::startsWith($header, 'Bearer ')){
+       // if(Auth::check()){
+            //dd("no");
             return $this->responseUnauthorized();
         }
 
@@ -55,10 +61,17 @@ class TbmMeetingController extends APIController
      * @param  \App\Http\Requests\StoreTbmMeetingRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTbmMeetingRequest $request): JsonResponse
+    public function store(Request $request1, StoreTbmMeetingRequest $request): JsonResponse
     {
+        $header = $request1->header('Authorization',' ');
+
+       if (!Str::startsWith($header, 'Bearer ')){
+            return $this->responseUnauthorized();
+        }
+
         try{
-        $validatedData = $request->validated();
+
+            $validatedData = $request->validated();
 
         // if ($validatedData->fails())
         // {
@@ -82,12 +95,14 @@ class TbmMeetingController extends APIController
      * @param  \App\Models\TbmMeeting  $tbmMeeting
      * @return \Illuminate\Http\Response
      */
-    public function show(TbmMeeting $tbmMeeting,Request $request): JsonResponse
+    public function show(TbmMeeting $tbmMeeting, Request $request): JsonResponse
     {
 
-      if(Auth::check()){
-            return $this->responseUnauthorized();
-        }
+        $header = $request->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
 
         try {
 
@@ -123,8 +138,14 @@ class TbmMeetingController extends APIController
      * @param  \App\Models\TbmMeeting  $tbmMeeting
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,UpdateTbmMeetingRequest  $request1,TbmMeeting $tbmMeeting): JsonResponse
+    public function update(Request $request, UpdateTbmMeetingRequest  $request1, TbmMeeting $tbmMeeting): JsonResponse
     {
+        $header = $request->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
      try{
         $meetingId = $request->route('id');
         $meetingDetails = $request1->validated();
@@ -143,8 +164,14 @@ class TbmMeetingController extends APIController
      * @param  \App\Models\TbmMeeting  $tbmMeeting
      * @return \Illuminate\Http\Response
      */
-      public function destroy(Request $request,TbmMeeting  $tbmMeeting): JsonResponse
+      public function destroy(Request $request, TbmMeeting  $tbmMeeting): JsonResponse
     {
+        $header = $request->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
         try{
             $meetingId = $request->route('id');
 
