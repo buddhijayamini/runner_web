@@ -14,7 +14,9 @@ class TbmRaceFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => "John Khan",
+            'external_id' => 2,
+            'meeting_id'=> 1
         ];
     }
 }

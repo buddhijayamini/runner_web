@@ -14,7 +14,9 @@ class TbmRunnerFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'external_id'=>2,
+            'name'=>'abc',
+            'race_id'=> 2
         ];
     }
 }
