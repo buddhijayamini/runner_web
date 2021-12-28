@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\APIController;
-use App\Models\TbmRace;
-use App\Http\Requests\StoreTbmRaceRequest;
-use App\Http\Requests\UpdateTbmRaceRequest;
-use App\Interfaces\RaceRepositoryInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Interfaces\RaceRepositoryInterface;
+use Illuminate\Support\Str;
+use App\Http\Requests\StoreTbmRaceRequest;
+use App\Models\TbmRace;
+use App\Http\Requests\UpdateTbmRaceRequest;
 use Illuminate\Support\Facades\Log;
 
 class TbmRaceController extends APIController
@@ -26,8 +27,14 @@ class TbmRaceController extends APIController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $header = $request->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
         return response()->json([
             'data' => $this->raceRepository->getAllRaces()
         ]);
@@ -49,8 +56,14 @@ class TbmRaceController extends APIController
      * @param  \App\Http\Requests\StoreTbmRaceRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTbmRaceRequest $request): JsonResponse
+    public function store(Request $request1, StoreTbmRaceRequest $request): JsonResponse
     {
+        $header = $request1->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
         try{
             $validatedData = $request->validated();
 
@@ -72,8 +85,14 @@ class TbmRaceController extends APIController
      * @param  \App\Models\TbmRace  $tbmRace
      * @return \Illuminate\Http\Response
      */
-    public function show(TbmRace $tbmRace,Request $request): JsonResponse
+    public function show(TbmRace $tbmRace, Request $request): JsonResponse
     {
+        $header = $request->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
         try {
             $raceId = $request->route('id');
 
@@ -105,8 +124,14 @@ class TbmRaceController extends APIController
      * @param  \App\Models\TbmRace  $tbmRace
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,UpdateTbmRaceRequest $request1, TbmRace $tbmRace): JsonResponse
+    public function update(Request $request, UpdateTbmRaceRequest $request1, TbmRace $tbmRace): JsonResponse
     {
+        $header = $request->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
         try{
             $raceId = $request->route('id');
             $raceDetails = $request1->validated();
@@ -126,8 +151,14 @@ class TbmRaceController extends APIController
      * @param  \App\Models\TbmRace  $tbmRace
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,TbmRace $tbmRace): JsonResponse
+    public function destroy(Request $request, TbmRace $tbmRace): JsonResponse
     {
+        $header = $request->header('Authorization',' ');
+
+        if (!Str::startsWith($header, 'Bearer ')){
+             return $this->responseUnauthorized();
+         }
+
         try{
             $raceId = $request->route('id');
 
