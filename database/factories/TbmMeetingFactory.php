@@ -14,7 +14,8 @@ class TbmMeetingFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => "John Khan",
+            'external_id' => 2,
         ];
     }
 }

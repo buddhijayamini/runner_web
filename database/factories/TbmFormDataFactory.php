@@ -14,7 +14,7 @@ class TbmFormDataFactory extends Factory
     public function definition()
     {
         return [
-            //
+           'runner_id' => 2
         ];
     }
 }
